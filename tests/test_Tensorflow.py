@@ -1,4 +1,3 @@
-import pytest
 from dvs_printf import listfunction
 try:
     import tensorflow as tf
@@ -21,7 +20,7 @@ try:
         '[7.0, 7.0, 7.0]','[8.0, 8.0, 8.0]','[9.0, 9.0, 9.0]']
 
     def test_getMat_true_tf():
-        assert listfunction((tf_list,),getMat = True)==test_tf_list
+        assert listfunction((tf_list,),getMat= True )==test_tf_list
         assert listfunction((tf_list,),getMat="true")==test_tf_list
 
     def test_getMat_show_tf():
