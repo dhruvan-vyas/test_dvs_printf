@@ -35,9 +35,12 @@ jobs:
           pip3 install pytest
 
       - name: Install tensorflow
-        if: ${{ matrix.python-version }} != 3.12
         run: |
-          pip3 install tensorflow --no-deps
+          python3
+          from platform import python_version
+          import os
+          if "3.12" not in str(python_version())
+            os.system('pip3 install tensorflow --no-deps')
           
       - name: Run Test
         run: pytest 
