@@ -2,4 +2,3 @@ numpy
 torch
 tensorflow
 pandas
-pytest
