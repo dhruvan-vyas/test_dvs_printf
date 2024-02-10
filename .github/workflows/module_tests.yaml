@@ -26,16 +26,12 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install Module
-        run: |
-          python3 -m pip install --upgrade pip
-          pip3 install pytest setuptools>=42.0.0
-          pip3 install .
-
       - name: Install dpendencies
         run: |
+          python3 -m pip install --upgrade pip
+          pip3 install numpy torch pandas pytest setuptools>=42.0.0
+          pip3 install .
           python3 tests/install_tf.py
-          pip3 install numpy torch pandas --no-deps
 
       - name: Run Test
         run: pytest 
