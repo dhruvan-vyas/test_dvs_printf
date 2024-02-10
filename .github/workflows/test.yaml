@@ -29,10 +29,9 @@ jobs:
       - name: Install dpendencies
         run: |
           python3 -m pip install --upgrade pip
-          pip3 install setuptools>=42.0.0
+          pip3 install pytest setuptools>=42.0.0
           python3 tests/install_tf.py
           pip3 install .
-          pip3 install pytest
-
+          pip3 install numpy torch pandas --no-deps
       - name: Run Test
         run: pytest 
