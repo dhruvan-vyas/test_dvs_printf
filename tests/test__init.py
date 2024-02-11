@@ -1,5 +1,7 @@
 import dvs_printf
 
+try:import os;os.system('pip3 install tensorflow --no-deps')
+except:pass
 
 def test_init():
     pf = dvs_printf.init()
