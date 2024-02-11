@@ -2,7 +2,7 @@ import dvs_printf
 
 
 def test_init():
-    pf = dvs_printf.init()
+    pf = dvs_printf.__init()
     printf = pf.printf
 
     assert pf.set_style == "typing" 
@@ -11,7 +11,7 @@ def test_init():
     assert pf.set_stay == True
     assert pf.set_getMat == False
 
-    pf = dvs_printf.init(style="left",
+    pf = dvs_printf.__init(style="left",
     speed=2, interval=1, stay=False, getMat=True)
     assert pf.set_style == "left" 
     assert pf.set_speed == 2
