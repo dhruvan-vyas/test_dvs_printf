@@ -34,9 +34,8 @@ jobs:
           python3 tests/install_tf.py
 
       - name: Install tensorflow
-        shell: bash
+        shell: python
         run: |
-          python3 
           from platform import python_version;import os
           if "3.12" not in str(python_version()):os.system('pip3 install tensorflow --no-deps')
 
