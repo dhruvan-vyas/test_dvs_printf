@@ -19,12 +19,13 @@ try:
         '[4.0, 4.0, 4.0]','[5.0, 5.0, 5.0]','[6.0, 6.0, 6.0]', 
         '[7.0, 7.0, 7.0]','[8.0, 8.0, 8.0]','[9.0, 9.0, 9.0]']
 
-    def test_getMat_true_tf():
-        assert listfunction((tf_list,),getMat= True )==test_tf_list
-        assert listfunction((tf_list,),getMat="true")==test_tf_list
+    def test_getmat_true_tf():
+        assert listfunction((tf_list,),getmat= True )==test_tf_list
+        assert listfunction((tf_list,),getmat="true")==test_tf_list
 
-    def test_getMat_show_tf():
-        assert listfunction((tf_list,),getMat="true show info")==test_tf_list+ \
+    def test_getmat_show_tf():
+        assert listfunction((tf_list,),getmat="true show info")==test_tf_list+ \
     ["<class 'Tensorflow'", "dtype: 'float32' ",'shape: (3, 3, 3)>']
-except:pass   
+except:
+    pass   
 

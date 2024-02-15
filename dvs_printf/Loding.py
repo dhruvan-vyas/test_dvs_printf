@@ -36,7 +36,7 @@ def Loding(t1, Text, lodingchar):
     print(end="\x1b[2K")
     
 
-def showLoding(target:object, args:tuple|None=(),kwargs:dict|None={},lodingText:str|None="Loding",lodingChar:str|None="#"):
+def showLoding(target:object, args:tuple|None=(),kwargs:dict|None={},lodingText:str|None="Loding",lodingChar:str|None="#") -> int:
     """
 create loding bar in terminal with `threading` for 
 
@@ -50,7 +50,9 @@ create loding bar in terminal with `threading` for
 ---
 keep in mind that this function already using print function 
  so your target function do not print anything while loding 
-otherwish loding bar will not work proparly.
+otherwish loding bar will not work proparly. 
+
+`return 0` if work done else `return 1 as error`!!! 
 
 loding funtion works on threading module 
  so, it's `take same input as threading`.
@@ -83,13 +85,14 @@ loding funtion works on threading module
         t1.join()
         t2.join()
         print('\033[?25h', end="")
-    
+        return 0
     except Exception as EXCPT:
         print('\033[?25h', end="")
         print(EXCPT)
+        return 1
 
+#------------(TEST)------------
 # showLoding(target=sleep,
 #         args = (10,),
 #         lodingText="Loding",
-#         lodingChar="◼︎"   
-#   )
+#         lodingChar="◼︎")

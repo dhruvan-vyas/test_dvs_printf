@@ -1,40 +1,41 @@
 # Enhance your Python project's console output with stylish printing animations using the dvs_printf module.
-# from time import sleep
-ranchoice = [
-    "b","c","d","e","f","g","h","i","c",
-    "d","l","a","w","t","r","s","v","x",
-    "z","n","o","-","p","q","r","s","t"]
-"random letters for matrix style animation"
+from time import sleep
+from os import get_terminal_size
 
-def listfunction(*values: tuple , getMat: str | None= False) -> list[str]:
+ranchoice =["b","c","d","e","f","g","h","i","c","d","l","a",
+"w","t","r","s","v","x","z","n","o","-","p","q","r","s","t"]
+
+
+def listfunction(*values: tuple , getmat: bool | str | None = False) -> list[str]:
     """
-return list with each element given.
-takes any DataType and gives `str(list)` with all elements by index 
-
-`set, dict, list, tuple` breake this kind 
-of DataSet and add Them into a list by index.
-
-getMat: `detult getMat = False`
-  if matrix is given, set `getMat=True`
-  it breaks metix in `rows by index` and
-  convet that in to string and add that in to list
+return list with each elements given. takes any DataType \\
+and gives `list[str]` with each elements by index. \\
+for `list, tuple, dict, set` breake this kind of  \\
+DataSet and add Them into a list by index.
+---
+### getmat: 
+matrix data modifier for \\
+`pytorch, tensorflow, numpy, pandas, list` \\
+it breaks matrices in `rows by index` and convet\\
+that in to list of string. `default getmat=False`
+#### getmat = `True` or `"true"` 
+to modify coyp of data for animation \\
+if `getmat=False` it's just apply animation \\
+whitout data modification, `as normal output`
+#### getmat = `"show"`
+for values `with information` about matrix \\
+`<class, shape, dtype>` 
     """
-    if len(values)==1:
-        values=values[0]  
-    
+    values=values[0]  
     newa_a=[]
-    # try:
-    # return values
-    # except:pass
-
     for value in values:
-        if getMat:
+        if getmat:
             try:
                 if "numpy" in  str(type(value)):
                     newa_a.extend(
                 [str(sublist.tolist()) for sublist in value.reshape(-1, value.shape[-1])]
                     )
-                    if "show" in str(getMat).lower():
+                    if "show" in str(getmat).lower():
                         newa_a.extend([
     "<class 'numpy.ndarray'","dtype="+str(value.dtype)+" ","shape="+str(value.shape)+">"
                     ])
@@ -43,7 +44,7 @@ getMat: `detult getMat = False`
                     from tensorflow import reshape,shape;newa_a.extend(
                 [str(sublist.numpy().tolist()) for sublist in reshape(value, [-1, shape(value)[-1]])]
                     )
-                    if "show" in str(getMat).lower():newa_a.extend([
+                    if "show" in str(getmat).lower():newa_a.extend([
     "<class 'Tensorflow'",(str(value.dtype).replace("<","")).replace(">","") +" ","shape: "+str(value.shape)+">"
                     ])
                     continue  
@@ -51,20 +52,20 @@ getMat: `detult getMat = False`
                     newa_a.extend(
                 [str(sublist.tolist()) for sublist in value.view(-1, value.size(-1))]
                     )
-                    if "show" in str(getMat).lower():newa_a.extend([
+                    if "show" in str(getmat).lower():newa_a.extend([
     "<class 'torch.Tensor'", " dtype="+str(value.dtype)+" "," shape="+str(value.shape)+">"
                     ])
                     continue
                 elif "pandas" in str(type(value)):
                     newa_a.extend(value.stack().apply(lambda x: str(x)).tolist())
-                    if "show" in str(getMat).lower():
+                    if "show" in str(getmat).lower():
                         newa_a.extend(["<class 'pandas'"," shape="+str(value.shape)+" "+">"])
                         newa_a.extend(
     (str(value.dtypes).replace("\n","@#$@")).replace("    ",": ").split("@#$@")
                     )
                     continue
                 else: 
-                    if isinstance(value,list) and isinstance(value[0],list):newa_a.extend(listfunction(value, getMat=True))
+                    if isinstance(value,list) and isinstance(value[0],list):newa_a.extend(listfunction(value, getmat=True))
                     elif isinstance(value,list):newa_a.append(str(value).replace("\n"," "))
                     continue
             except:pass
@@ -72,45 +73,43 @@ getMat: `detult getMat = False`
         if type(value)==dict:
             for i in value:newa_a.extend(f"{i}: {value[i]}".replace("\n","@#$%#$@"+" "*(len(i)+2)).split("@#$%#$@"))
         elif (type(value)==list)or(type(value)==tuple)or(type(value)==set):newa_a.extend(listfunction(value))
-        elif (type(value)==str)and("\n" in value): newa_a.extend(value.split("\n"))
+        elif (type(value)==str)and("\n" in value):newa_a.extend(value.split("\n"))
         else: newa_a.extend(str(value).split("\n"))
-
     return newa_a
 
 
-from time import sleep
-from os import get_terminal_size
-
-def printf(*values: object, 
-            style: str | None = 'typing', 
-            speed: int | None = 3, 
-         interval: int | None = 2,  
-            stay: bool | None = True,
-            getMat: bool | str | None = False) :
+def printf(*values:object, 
+            style:str|None='typing', 
+            speed:int|None=3, 
+         interval:int|None=2,  
+             stay:bool|None=True,
+           getmat:bool|str|None=False,
+    ) -> None :
     ''' 
-### prints values to a stream.
+#### [prints](https://google.com) \
+values to a stream with animation.
 
-style
+[style](https://google.com)
    style is defins different types of print animation. `default a "typing"`. 
-    [typing, headline, newsline, mid, gunshort, snip, matrix, matrix2, \n     left, right, center, centerAC, centerAL, centerAR, f2b, b2f, help] 
-speed
+    [typing, headline, newsline, mid, gunshort, snip, matrix, matrix2,
+     left, right, center, centerAC, centerAL, centerAR, f2b, b2f, help] 
+[speed](https://google.com)
    speed is defins printf's animation speed `from 1 to 6` `default a 3`
-interval
+[interval](https://google.com)
    waiting time between printing animation of two lines `default a 2`.
-    `(interval in second >= 0)` from 0 to 5 or greater
-stay 
-   stay decides after style animation whether you want the 
-    stream on terminal OR Not. `default a True`. don't work some style
-
-# getMat
-#     "hello worlsd
-
-`style="help" for more info`.
+    `(interval in second >= 0)` int | float  
+[stay](https://google.com)
+   decide after style animation whether you want the values \\
+   on stream OR NOT `default a True`. don't work for some styles
+---
+#### [getmat:](https://google.com) 
+matrix data modifier for `pytorch, tensorflow, numpy, pandas, list` \\
+for animation, `default getmat=False`, set as `True, "true", "show"`
     '''
-    values=listfunction(values, getMat=getMat)
+    values=listfunction(values, getmat=getmat)
     style=str(style).lower()
     if interval<0:interval=2
-    elif style in ["right","left"]:speed=(.032/speed)if(speed>=1 and speed<=6)else .016
+    elif style in ["right","left","typing"]:speed=(.032/speed)if(speed>=1 and speed<=6)else .016
     elif style=="gunshort":speed=(.064/speed)if(speed>=1 and speed<=6)else .016
     elif style=="newsline":speed=(.18/speed)if(speed>=1 and speed<=6)else .06
     elif style=="snip":speed=(.016/speed)if(speed>=1 and speed<=6)else .008
@@ -118,14 +117,14 @@ stay
     else:speed=(.16/speed)if(speed>=1 and speed<=6)else .08
 
     print('\033[?25l', end="")
-    if style == "typing":
+    if style=="typing":
         for x in values:
             for i in x:
                 print(i+"|\b", end="",flush=True)
                 sleep(speed)
             print(" ")
             sleep(interval)
-    elif style == "headline":
+    elif style=="headline":
         for x in values:
             line = ""
             x = str(x)
@@ -141,7 +140,7 @@ stay
                 print(delete_last+"|",end="\r",flush=True)
                 sleep(speed)
                 print(end="\x1b[2K")
-    elif style == "newsline":
+    elif style=="newsline":
         longLineLen = 30
         for L in values:
             if len(L)>longLineLen:longLineLen=len(L)
@@ -160,7 +159,7 @@ stay
                 sleep(speed)
                 print(end="\x1b[2K")
             sleep(interval*.06)
-    elif style == "mid":
+    elif style=="mid":
         for x in values:
             x = x if len(x)%2==0 else x+" "
             lan = len(x)//2
@@ -171,7 +170,7 @@ stay
                 print(" "*(lan-i-1)+front+back,end="\r",flush=True)
                 sleep(speed)
             print(end="\x1b[2K")
-            if stay==True:print(x)
+            if stay:print(x)
             sleep(interval)
     elif style=="right":
         for i in values:
@@ -212,7 +211,7 @@ stay
                 print(" "*int(temlen)+i[0:j]+endline+" "*(len(i)-j-1),end="\r",flush=True)
                 sleep(speed)
             sleep(interval)
-            if stay==True:print(end="\n")
+            if stay:print(end="\n")
             else:print(end="\x1b[2K");sleep(.4)
     elif style=="centerac":
         for i in values:
@@ -223,7 +222,7 @@ stay
                 print((i[0:j]+endline).center(temlen),end="\r",flush=True)
                 sleep(speed)
             sleep(interval)
-            if stay==True:print(end="\n")
+            if stay:print(end="\n")
             else:print(end="\x1b[2K");sleep(.4)
     elif style=="centeral":
         longlen = 0
@@ -237,7 +236,7 @@ stay
                 print(" "*int(temlen/2-(longlen/2))+i[0:j]+endline,end="\r")
                 sleep(speed)
             sleep(interval)
-            if stay==True:print(end="\n")
+            if stay:print(end="\n")
             else:print(end="\x1b[2K");sleep(.4)
         return 0
     elif style=="centerar":
@@ -250,7 +249,7 @@ stay
                 print(" "*int(temlen/2+(longlen/2-len(i))) +  i[0:j],end="\r")
                 sleep(speed)
             sleep(interval)
-            if stay==True:print(end="\n")
+            if stay:print(end="\n")
             else:print(end="\x1b[2K");sleep(.4)
     elif style=="gunshort":
         for x in values:
@@ -283,7 +282,7 @@ stay
                 print(end="\x1b[2K")
                 addone+=1
                 short=short+x[i]
-            if stay==True:print(x)
+            if stay:print(x)
             else:print(x,end="\r");print(end="\x1b[2K")
             sleep(interval)
     elif style=="f2b":
@@ -324,7 +323,7 @@ stay
             sleep(interval)
             if stay:print(end="\x1b[2K");print(value)
             else:print(value,end="\r");print(end="\x1b[2K")
-    elif style == "matrix2":
+    elif style=="matrix2":
         from random import randint,choice
         for ab in values:
             entry=""
@@ -334,32 +333,34 @@ stay
                     print(entry+choice(ranchoice), end="\n")
                     sleep(speed)
             print(end="\x1b[2K");print(ab);sleep(interval)
-    elif style == "help":
-        print("""\n
-        >>>>>>>>  DVS_PRINTF Function  <<<<<<<<\n\n
+    elif style=="help":
+        tem_len_line = int(get_terminal_size()[0])
+        mid_len_line = int(tem_len_line/2 - 9)
+        print("\n"+"="*tem_len_line+"\n"+(" "*mid_len_line)+">>> DVS_PRINTF <<<"+"\n"+"="*tem_len_line)
+        printf("""\n
 keywords --> printf(values, style='typing', speed=3, interval=2, stay=True)\n\n
 values --> main stream input values  
            value can be any-data-Type 
-        Ex. printf(str, list, [tuple, set], dict, int,...)\n\n
-style -->  style is different type if printing animation 
-        styles, from this list each style type works 
-        differently according to description below\n
-        ["typing", "headline","newsline", "mid","left","right",
-        "center", "centerAC","centerAL","centerAR", "f2b", "b2f",
-        "gunshort", "snip", "matrix", "matrix2", "help"]\n
+           Ex. printf(str, list, [tuple, set], dict, int,...)\n\n
+style --> style is different type if printing animation 
+          styles, from this list each style type works 
+          differently according to description below\n
+        ["typing", "headline", "newsline", "mid", "left", "right",
+         "center", "centerAC", "centerAL", "centerAR", "f2b", "b2f",
+         "gunshort", "snip", "matrix", "matrix2", "help"]\n
         typing   => print like typing
         headline => print headlines animation
         newsline => print running newslines animation
         mid      => print line from mid
         left     => value coming from left side of the terminal
         right    => value coming from right side of the terminal
-        center   => values appear at center of the terminal 
-        centerAC => values arrang at center of the terminal 
+        center   => values appear at center of the terminal
+        centerAC => values arrang at center of the terminal
         centerAL => arrang list-item at center-Left on terminal
         centerAR => arrang list-item at center-Right on terminal
         gunshort => firing the words from short gun
         snip     => sniping the words from end of the terminal
-        matrix   => print random words to real line 
+        matrix   => print random words to real line
         matrix2  => print 1st word and 2nd random word
         f2b      => typing and remove word from (back to front)
         b2f      => typing and remove word from (front to back)\n\n
@@ -374,19 +375,24 @@ speed -->  speed of printf's animation
 interval --> interval is waiting time between printing 
              of each values, (interval in second) 
              defult interval is 2, you can set from 0 to grater\n\n    
-stay --> after style animation whether you want the stream OR Not
-         `defult stay is True`, can be `True or False`\n
-         but some styles take `No action on stay`
+stay --> after style animation whether you want the values OR Not
+         defult stay is True, can be `True or False`\n
+         but some styles take No action on stay
          whether it is True OR False 
-         Ex. ( typing, headline, newsline, f2b,  b2f, matrix2 )\n""")
+         Ex. ( typing, headline, newsline, f2b,  b2f, matrix2 )\n""",
+         style="typing", speed=6, interval=0)
+        print("="*tem_len_line+"\n")
         for i in values:print(i)
     else:
-        print(f"\n\n  >>>>  no paramiter '{style}' for style  <<<<   \n")
-        print("  >>>>  please enter name of style=''  from the list <<<<   \n")
-        print('''[typing, headline, newsline, mid, gunshort, snip,\n left, right, center, centerAC, centerAL, centerAR,\n matrix, matrix2, f2b, b2f, help]\n\n''')
-        for i in values:
-            print(i)
-
+        print(f'''
+        printf does not accepts style='{style}' as parameter
+        {"~"*31+"^"*len(style)} 
+       >>> please enter name of  style=''  from the list <<<          
+{"-"*67}
+[typing, headline, newsline, mid, gunshort, snip, matrix, matrix2,
+ left, right, center, centerAC, centerAL, centerAR, f2b, b2f, help]
+        ''')
+        for i in values:print(i)
     print('\033[?25h', end="")
     del values
 
@@ -397,3 +403,37 @@ stay --> after style animation whether you want the stream OR Not
 #     interval = .5,
 #     stay = False,
 #     )
+
+# printf("hello word",style="help")
+# print(len(
+#     "    printf does not accepts '"
+# ))
+# 29
+# def foo():
+
+#     f = inspect.currentframe()
+#     i = inspect.getframeinfo(f.f_back)
+    
+# asdv 1
+# asdv 2
+# def test(a="abc"):
+#     if a!="abc":
+#         foo()
+# # asdv 3
+# test(a="abcd")
+# a = len(
+# "----------------------------------------------------------------------")
+# printf(style="help")
+# print(f'''
+# \tprintf does not accepts style='{style}' as parameter
+# \t{"~"*31+"^"*len(style)} 
+#         >>> please enter name of  style=''  from the list <<<          
+# {"-"*70}
+#  [ typing, headline, newsline, mid, gunshort, snip, matrix, matrix2,
+#    left, right, center, centerAC, centerAL, centerAR, f2b, b2f, help ]
+# ''')
+        
+
+# print(end="\033[F"*2)
+    
+
